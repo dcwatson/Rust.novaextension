@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syntax name="rust">
+    <meta>
+        <name>Rust</name>
+        <type>compiled</type>
+        <preferred-file-extension>rs</preferred-file-extension>
+    </meta>
+    
+    <detectors>
+        <extension priority="1.0">rs</extension>
+    </detectors>
+    
+    <indentation>
+        <increase>
+            <expression>(\{[^}\"']*$)|(\[[^\]\"']*$)|(\([^)\"']*$)</expression>
+        </increase>
+        <decrease>
+            <expression>^\s*(\s*/\*.*\*/\s*)*[\}\]\)\\]</expression>
+        </decrease>
+    </indentation>
+    
+    <comments>
+        <single>
+            <expression>//</expression>
+        </single>
+        <multiline>
+            <starts-with>
+                <expression>/\*</expression>
+            </starts-with>
+            <ends-with>
+                <expression>\*/</expression>
+            </ends-with>
+        </multiline>
+    </comments>
+    
+    <brackets>
+        <pair open="{" close="}" />
+        <pair open="[" close="]" />
+        <pair open="(" close=")" />
+        <pair open="&lt;" close="&gt;" />
+    </brackets>
+    
+    <surrounding-pairs>
+        <pair open="{" close="}" />
+        <pair open="[" close="]" />
+        <pair open="(" close=")" />
+        <pair open="&lt;" close="&gt;" />
+        <pair open="&quot;" close="&quot;" />
+    </surrounding-pairs>
+    
+    <scopes>
+        <include syntax="self" collection="comments" />
+        <include syntax="self" collection="processing" />
+        <include syntax="self" collection="blocks" />
+        <!--<include syntax="self" collection="visibility" />-->
+        <include syntax="self" collection="definitions" />
+        <include syntax="self" collection="keywords" />
+        <include syntax="self" collection="values" />
+        <include syntax="self" collection="identifiers" />
+    </scopes>
+    
+    <collections>
+        <!-- Comments -->
+        <collection name="comments">
+            <scope name="rust.comment.single">
+                <expression>//(?:/|!)?(.*)$</expression>
+                <capture number="1" name="rust.comment.content" />
+            </scope>
+            <scope name="rust.comment.block">
+                <starts-with>
+                    <expression>/\*</expression>
+                </starts-with>
+                <ends-with>
+                    <expression>\*/</expression>
+                </ends-with>
+            </scope>
+        </collection>
+        
+        <!-- Keywords -->
+        <collection name="keywords">
+            <scope name="rust.keyword">
+                <symbol type="keyword" />
+                <strings>
+                    <string>as</string>
+                    <string>break</string>
+                    <string>const</string>
+                    <string>continue</string>
+                    <string>crate</string>
+                    <string>else</string>
+                    <string>enum</string>
+                    <string>extern</string>
+                    <string>fn</string>
+                    <string>for</string>
+                    <string>if</string>
+                    <string>impl</string>
+                    <string>in</string>
+                    <string>let</string>
+                    <string>loop</string>
+                    <string>match</string>
+                    <string>mod</string>
+                    <string>move</string>
+                    <string>mut</string>
+                    <string>pub</string>
+                    <string>ref</string>
+                    <string>return</string>
+                    <string>self</string>
+                    <string>Self</string>
+                    <string>static</string>
+                    <string>struct</string>
+                    <string>super</string>
+                    <string>trait</string>
+                    <string>type</string>
+                    <string>unsafe</string>
+                    <string>use</string>
+                    <string>where</string>
+                    <string>while</string>
+                    
+                    <string>async</string>
+                    <string>await</string>
+                    <string>dyn</string>
+                    
+                    <string>abstract</string>
+                    <string>become</string>
+                    <string>box</string>
+                    <string>do</string>
+                    <string>final</string>
+                    <string>macro</string>
+                    <string>override</string>
+                    <string>priv</string>
+                    <string>typeof</string>
+                    <string>unsized</string>
+                    <string>virtual</string>
+                    <string>yield</string>
+                    <string>try</string>
+                    
+                    <string>union</string>
+                    <string>&apos;static</string>
+                </strings>
+            </scope>
+            
+            <scope name="rust.identifier.type.primitive">
+                <strings>
+                    <string>bool</string>
+                    <string>char</string>
+                    <string>str</string>
+                    <string>u8</string>
+                    <string>u16</string>
+                    <string>u32</string>
+                    <string>u64</string>
+                    <string>u128</string>
+                    <string>usize</string>
+                    <string>i8</string>
+                    <string>i16</string>
+                    <string>i32</string>
+                    <string>i64</string>
+                    <string>i128</string>
+                    <string>isize</string>
+                    <string>f32</string>
+                    <string>f64</string>
+                </strings>
+            </scope>
+        </collection>
+        
+        <!-- Values -->
+        <collection name="values">
+            <scope name="rust.value.boolean">
+                <strings>
+                    <string>true</string>
+                    <string>false</string>
+                </strings>
+            </scope>
+            <scope name="rust.value.number.float">
+                <expression>\b-?[0-9]+(?:\.[0-9]+)?(?:f32|f64)?\b</expression>
+            </scope>
+            <scope name="rust.value.number.integer">
+                <expression>\b-?[0-9][0-9_]*(?:[iu](?:8|16|32|64|128|size))?\b</expression>
+            </scope>
+            <scope name="rust.string">
+                <starts-with>
+                    <expression>&quot;</expression>
+                </starts-with>
+                <ends-with>
+                    <expression>&quot;</expression>
+                </ends-with>
+            </scope>
+        </collection>
+        
+        <collection name="identifiers">
+            <scope name="rust.identifier">
+                <symbol type="variable" />
+                <starts-with>
+                    <expression>\b(let|var)\b\s*(mut)?\s*([a-zA-Z0-9_]+)</expression>
+                    <capture number="1" name="rust.keyword" />
+                    <capture number="2" name="rust.keyword" />
+                    <capture number="3" name="rust.identifier.variable.name" />
+                </starts-with>
+                <ends-with>
+                    <expression>(?={|=|:)</expression>
+                </ends-with>
+            </scope>
+            
+            <scope name="rust.identifier.property">
+                <expression>\b(?&lt;=\.)([a-zA-Z0-9_]+)(?!\()\b</expression>
+            </scope>
+            
+            <scope name="rust.identifier.property.path">
+                <expression>\b(?&lt;=\:\:)([a-zA-Z0-9_]+)(?!\()\b</expression>
+            </scope>
+            
+            <scope name="rust.method">
+                <starts-with>
+                    <expression>(?&lt;=\.)([a-zA-Z0-9_]+)(\()</expression>
+                    <capture number="1" name="rust.identifier.method.name" />
+                    <capture number="2" name="rust.bracket" />
+                </starts-with>
+                <ends-with>
+                    <expression>\)</expression>
+                    <capture number="0" name="rust.bracket" />
+                </ends-with>
+            </scope>
+
+            <scope name="rust.method.path">
+                <starts-with>
+                    <expression>(?&lt;=\:\:)([a-zA-Z0-9_]+)(\()</expression>
+                    <capture number="1" name="rust.identifier.method.name" />
+                    <capture number="2" name="rust.bracket" />
+                </starts-with>
+                <ends-with>
+                    <expression>\)</expression>
+                    <capture number="0" name="rust.bracket" />
+                </ends-with>
+            </scope>
+            
+            <scope name="rust.identifier">
+                <expression>\b[a-zA-Z0-9_]+\b</expression>
+            </scope>
+        </collection>
+        
+        <!-- Visibility -->
+        <collection name="visibility">
+            <scope name="rust.visibility.pub">
+                <expression>\b(pub)\b</expression>
+                <capture number="1" name="rust.keyword" />
+            </scope>
+            <scope name="rust.visibility.scoped">
+                <starts-with>
+                    <expression>(pub)\s*\(</expression>
+                    <capture number="1" name="rust.keyword" />
+                </starts-with>
+                <ends-with>
+                    <expression>\)</expression>
+                </ends-with>
+                <subscopes>
+                    <scope name="rust.visibility.scoped.in">
+                        <expression>(in)\s+.+</expression>
+                        <capture number="1" name="rust.keyword" />
+                    </scope>
+                    <scope name="rust.visibility.scoped.scope">
+                        <expression>(crate|super|self)</expression>
+                        <capture number="1" name="rust.keyword" />
+                    </scope>
+                </subscopes>
+            </scope>
+        </collection>
+        
+        <!-- Arguments -->
+        <collection name="arguments">
+            <scope name="rust.arguments">
+                <starts-with>
+                    <expression>\(</expression>
+                    <capture number="0" name="rust.bracket" />
+                </starts-with>
+                <ends-with>
+                    <expression>\)</expression>
+                    <capture number="0" name="rust.bracket" />
+                </ends-with>
+                <subscopes>
+                    <scope name="rust.separator">
+                        <expression>,</expression>
+                    </scope>
+                    <scope name="rust.identifier.argument.self">
+                        <symbol type="argument" />
+                        <expression>&amp;?\s*(mut)?\s*&amp;?\s*(self)</expression>
+                        <capture number="1" name="rust.keyword" />
+                        <capture number="2" name="rust.identifier.argument.name" />
+                    </scope>
+                    <scope name="rust.identifier.argument">
+                        <symbol type="argument" />
+                        <expression>([a-zA-Z0-9_]+)\s*(?=:)</expression>
+                        <capture number="1" name="rust.identifier.argument.name" />
+                    </scope>
+                    <include syntax="self" collection="types" />
+                </subscopes>
+            </scope>
+        </collection>
+        
+        <!-- Types -->
+        <collection name="types">
+            <scope name="rust.type.generic">
+                <starts-with>
+                    <expression>[a-zA-Z0-9_]+&lt;</expression>
+                </starts-with>
+                <ends-with>
+                    <expression>&gt;</expression>
+                </ends-with>
+                <subscopes>
+                    <scope name="rust.type.generic.separator">
+                        <expression>,</expression>
+                    </scope>
+                    <include syntax="self" collection="types" />
+                </subscopes>
+            </scope>
+            <scope name="rust.type.plain">
+                <expression>([a-zA-Z0-9_]+)</expression>
+                <capture number="1" name="rust.identifier.type.name" />
+            </scope>
+        </collection>
+        
+        <collection name="return-type">
+            <scope name="rust.type.return">
+                <starts-with>
+                    <expression>-&gt;</expression>
+                </starts-with>
+                <ends-with>
+                    <expression>(?=\{)</expression>
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="types" />
+                </subscopes>
+            </scope>
+        </collection>
+
+        <!-- Blocks -->
+        <collection name="blocks">
+            <scope name="rust.block">
+                <symbol type="block">
+                    <context behavior="subtree" />
+                </symbol>
+                <starts-with>
+                    <expression>\{</expression>
+                    <capture number="0" name="rust.block.bracket" />
+                </starts-with>
+                <ends-with>
+                    <expression>\}</expression>
+                    <capture number="0" name="rust.block.bracket" />
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" />
+                </subscopes>
+            </scope>
+        </collection>
+
+        <!-- Function Blocks -->
+        <collection name="function-blocks">
+            <scope name="rust.block.function">
+                <symbol type="block">
+                    <context behavior="subtree" fold-type="function" />
+                </symbol>
+                <starts-with>
+                    <expression>\{</expression>
+                    <capture number="0" name="rust.block.bracket" />
+                </starts-with>
+                <ends-with>
+                    <expression>\}</expression>
+                    <capture number="0" name="rust.block.bracket" />
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" />
+                </subscopes>
+            </scope>
+        </collection>
+        
+        <collection name="processing">
+            <scope name="rust.processing">
+                <starts-with>
+                    <expression>\#\[</expression>
+                </starts-with>
+                <ends-with>
+                    <expression>\]</expression>
+                </ends-with>
+            </scope>
+        </collection>
+        
+        <!-- Definitions -->
+        <collection name="definitions">
+            <scope name="rust.definition.function">
+                <symbol type="function">
+                    <context behavior="subtree" foldable="false" />
+                </symbol>
+                <starts-with>
+                    <expression>\b(fn)\s+([a-zA-Z0-9_]+)</expression>
+                    <capture number="1" name="rust.keyword" />
+                    <capture number="2" name="rust.identifier.function.name" />
+                </starts-with>
+                <ends-with>
+                    <expression>(?&lt;=\})</expression>
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="arguments" />
+                    <include syntax="self" collection="return-type" />
+                    <include syntax="self" collection="function-blocks" />
+                </subscopes>
+            </scope>
+            
+            <scope name="rust.definition.enum">
+                <symbol type="enum" />
+                <starts-with>
+                    <expression>\b(enum)\s+([a-zA-Z0-9_]+)\s*\b</expression>
+                    <capture number="1" name="rust.keyword" />
+                    <capture number="2" name="rust.identifier.type.enum.name" />
+                </starts-with>
+                <ends-with>
+                    <expression>(?={)</expression>
+                    <capture number="0" name="rust.bracket" />
+                </ends-with>
+            </scope>
+            
+            <scope name="rust.definition.protocol">
+                <symbol type="interface">
+                    <context behavior="subtree" foldable="false" />
+                    <display-name>
+                        <component variable="name" />
+                        <component selector="rust.identifier.type.struct" prepend=" (" append=")" />
+                    </display-name>
+                </symbol>
+                <starts-with>
+                    <expression>\b(impl)\s+([a-zA-Z0-9_]+)\s*(for)?\s*([a-zA-Z0-9_]+)?\b</expression>
+                    <capture number="1" name="rust.keyword" />
+                    <capture number="2" name="rust.identifier.type.protocol.name" />
+                    <capture number="3" name="rust.keyword" />
+                    <capture number="4" name="rust.identifier.type.struct" />
+                </starts-with>
+                <ends-with>
+                    <expression>(?&lt;=\})</expression>
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="function-blocks" />
+                </subscopes>
+            </scope>
+        </collection>
+    </collections>
+</syntax>
