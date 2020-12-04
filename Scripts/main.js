@@ -11,11 +11,42 @@ exports.deactivate = function() {
     }
 }
 
+nova.commands.register("rust.format", (editor) => {
+    try {
+        var path = nova.config.get("rust.rustfmt.path");
+        if (!path) {
+            path = nova.path.expanduser("~/.cargo/bin/rustfmt");
+        }
+
+        var process = new Process(path, {});
+        let docRange = new Range(0, editor.document.length);
+        let text = editor.getTextInRange(docRange);
+        var formattedLines = [];
+
+        process.start();
+        process.onStdout((line) => {
+            formattedLines.push(line);
+        });
+        process.onDidExit((code) => {
+            let formatted = formattedLines.join("");
+            editor.edit((e) => {
+                e.replace(docRange, formatted);
+            });
+        });
+        
+        let writer = process.stdin.getWriter();
+        writer.write(text);
+        writer.close();
+    }
+    catch (err) {
+        console.error("Could not call rustfmt: " + err);
+    }
+});
 
 class RustLanguageServer {
     constructor() {
         // Observe the configuration setting for the server's location, and restart the server on change
-        nova.config.observe('rust.language-server-path', function(path) {
+        nova.config.observe('rust.rls.path', function(path) {
             this.start(path);
         }, this);
     }

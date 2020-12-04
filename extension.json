@@ -1,10 +1,13 @@
 {
-    "identifier": "dev.neolith.Rust",
+    "identifier": "net.danwatson.Rust",
     "name": "Rust",
-    "organization": "Neolith",
+    "organization": "Dan Watson",
     "description": "Syntax highlighting and autocompletion for Rust.",
     "version": "1.0",
-    "categories": ["languages"],
+    "categories": ["languages", "formatters"],
+    "repository": "https://github.com/dcwatson/Rust.novaextension",
+    "bugs": "https://github.com/dcwatson/Rust.novaextension/issues",
+    "license": "MIT",
     
     "main": "main.js",
     
@@ -15,15 +18,36 @@
     
     "config": [
         {
-            "key": "rust.language-server-path",
-            "title": "Language Server Path",
+            "key": "rust.rls.path",
+            "title": "Language Server (rls) Path",
             "type": "path",
             "placeholder": "~/.cargo/bin/rls"
+        },
+        {
+            "key": "rust.rustfmt.path",
+            "title": "Formatter (rustfmt) Path",
+            "type": "path",
+            "placeholder": "~/.cargo/bin/rustfmt"
         }
     ],
     
     "activationEvents": [
         "onLanguage:rust",
         "onWorkspaceContains:Cargo.toml"
-    ]
+    ],
+    
+    "commands": {
+        "editor": [
+            {
+                "title": "Format",
+                "command": "rust.format",
+                "shortcut": "opt-shift-f",
+                "when": "editorHasFocus",
+                "filters": {
+                    "syntaxes": ["rust"]
+                }
+            }
+        ]
+        
+    }
 }

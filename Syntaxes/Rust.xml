@@ -55,6 +55,7 @@
         <!--<include syntax="self" collection="visibility" />-->
         <include syntax="self" collection="definitions" />
         <include syntax="self" collection="macros" />
+        <include syntax="self" collection="std" />
         <include syntax="self" collection="keywords" />
         <include syntax="self" collection="values" />
         <include syntax="self" collection="identifiers" />
@@ -309,6 +310,19 @@
             </scope>
         </collection>
         
+        <!-- Built-in stuff -->
+        <collection name="std">
+            <scope name="rust.identifier.core.type.enum">
+                <expression>\b(Some|None|Ok|Err)\b</expression>
+            </scope>
+            <scope name="rust.identifier.core.type.protocol">
+                <expression>\b(Copy|Send|Sized|Sync|Drop|Fn|FnMut|FnOnce|Clone|PartialEq|PartialOrd|Eq|Ord|AsRef|AsMut|Into|From|Default|Iterator|Extend|IntoIterator|DoubleEndedIterator|ExactSizeIterator|ToOwned|ToString)\b</expression>
+            </scope>
+            <scope name="rust.identifier.core.type.struct">
+                <expression>\b(Box|String|Vec|Path|PathBuf|Option|Result)\b</expression>
+            </scope>
+        </collection>
+        
         <!-- Types -->
         <collection name="types">
             <scope name="rust.type.generic">
@@ -322,13 +336,17 @@
                     <scope name="rust.type.generic.separator">
                         <expression>,</expression>
                     </scope>
-                    <include syntax="self" collection="types" />
+                    <scope name="rust.type.generic.inner">
+                        <expression>((::)?[a-zA-Z0-9_]+)+</expression>
+                        <capture number="0" name="rust.identifier.type.name" />
+                    </scope>
+                    <!--<include syntax="self" collection="types" />-->
                     <include syntax="self" collection="lifetime" />
                 </subscopes>
             </scope>
             <scope name="rust.type.plain">
-                <expression>([a-zA-Z0-9_]+)</expression>
-                <capture number="1" name="rust.identifier.type.name" />
+                <expression>((::)?[a-zA-Z0-9_]+)+</expression>
+                <capture number="0" name="rust.identifier.type.name" />
             </scope>
         </collection>
         
@@ -338,7 +356,7 @@
                     <expression>-&gt;</expression>
                 </starts-with>
                 <ends-with>
-                    <expression>(?=\{)</expression>
+                    <expression>(?=\{|;)</expression>
                 </ends-with>
                 <subscopes>
                     <include syntax="self" collection="types" />
@@ -409,7 +427,7 @@
                     <capture number="2" name="rust.identifier.function.name" />
                 </starts-with>
                 <ends-with>
-                    <expression>(?&lt;=\})</expression>
+                    <expression>(?&lt;=\}|;)</expression>
                 </ends-with>
                 <subscopes>
                     <include syntax="self" collection="arguments" />
@@ -420,16 +438,41 @@
             </scope>
             
             <scope name="rust.definition.enum">
-                <symbol type="enum" />
+                <symbol type="enum">
+                    <context behavior="subtree" />
+                </symbol>
                 <starts-with>
-                    <expression>\b(enum)\s+([a-zA-Z0-9_]+)\s*\b</expression>
+                    <expression>\b(enum)\s+([a-zA-Z0-9_]+)</expression>
                     <capture number="1" name="rust.keyword" />
                     <capture number="2" name="rust.identifier.type.enum.name" />
                 </starts-with>
                 <ends-with>
-                    <expression>(?={)</expression>
-                    <capture number="0" name="rust.bracket" />
+                    <expression>(?&lt;=\}|;)</expression>
                 </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="definitions" />
+                    <include syntax="self" collection="types" />
+                    <include syntax="self" collection="function-blocks" />
+                </subscopes>
+            </scope>
+            
+            <scope name="rust.definition.struct">
+                <symbol type="struct">
+                    <context behavior="subtree" />
+                </symbol>
+                <starts-with>
+                    <expression>\b(struct)\s+([a-zA-Z0-9_]+)</expression>
+                    <capture number="1" name="rust.keyword" />
+                    <capture number="2" name="rust.identifier.type.struct.name" />
+                </starts-with>
+                <ends-with>
+                    <expression>(?&lt;=\}|;)</expression>
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="definitions" />
+                    <include syntax="self" collection="types" />
+                    <include syntax="self" collection="function-blocks" />
+                </subscopes>
             </scope>
             
             <scope name="rust.definition.trait">
@@ -455,7 +498,7 @@
                 <symbol type="interface">
                     <context behavior="subtree" foldable="false" />
                     <display-name>
-                        <component selector="rust.identifier.type.name" />
+                        <component selector="rust.type.plain" />
                         <component selector="rust.identifier.type.impl.for" prepend=" (" append=")" />
                     </display-name>
                 </symbol>
