@@ -2,7 +2,7 @@
     "identifier": "dev.neolith.Rust",
     "name": "Rust",
     "organization": "Neolith",
-    "description": "Lorem ipsum, dolor sit amet.",
+    "description": "Syntax highlighting and autocompletion for Rust.",
     "version": "1.0",
     "categories": ["languages"],
     
