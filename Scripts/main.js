@@ -18,7 +18,10 @@ nova.commands.register("rust.format", (editor) => {
             path = nova.path.expanduser("~/.cargo/bin/rustfmt");
         }
 
-        var process = new Process(path, {});
+        // TODO: read this from Cargo.toml
+        var process = new Process(path, {
+            args: ["--edition", "2018"]
+        });
         let docRange = new Range(0, editor.document.length);
         let text = editor.getTextInRange(docRange);
         var formattedLines = [];

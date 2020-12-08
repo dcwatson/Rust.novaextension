@@ -3,7 +3,7 @@
     "name": "Rust",
     "organization": "Dan Watson",
     "description": "Syntax highlighting and autocompletion for Rust.",
-    "version": "1.0",
+    "version": "1.0.1",
     "categories": ["languages", "formatters"],
     "repository": "https://github.com/dcwatson/Rust.novaextension",
     "bugs": "https://github.com/dcwatson/Rust.novaextension/issues",

@@ -227,6 +227,9 @@
                     <expression>\)</expression>
                     <capture number="0" name="rust.bracket" />
                 </ends-with>
+                <subscopes>
+                    <include syntax="self" />
+                </subscopes>
             </scope>
 
             <scope name="rust.method.path">
@@ -239,6 +242,9 @@
                     <expression>\)</expression>
                     <capture number="0" name="rust.bracket" />
                 </ends-with>
+                <subscopes>
+                    <include syntax="self" />
+                </subscopes>
             </scope>
             
             <scope name="rust.identifier">
