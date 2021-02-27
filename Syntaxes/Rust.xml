@@ -5,11 +5,11 @@
         <type>compiled</type>
         <preferred-file-extension>rs</preferred-file-extension>
     </meta>
-    
+
     <detectors>
         <extension priority="1.0">rs</extension>
     </detectors>
-    
+
     <indentation>
         <increase>
             <expression>(\{[^}\"']*$)|(\[[^\]\"']*$)|(\([^)\"']*$)</expression>
@@ -18,7 +18,7 @@
             <expression>^\s*(\s*/\*.*\*/\s*)*[\}\]\)\\]</expression>
         </decrease>
     </indentation>
-    
+
     <comments>
         <single>
             <expression>//</expression>
@@ -32,14 +32,14 @@
             </ends-with>
         </multiline>
     </comments>
-    
+
     <brackets>
         <pair open="{" close="}" />
         <pair open="[" close="]" />
         <pair open="(" close=")" />
         <pair open="&lt;" close="&gt;" />
     </brackets>
-    
+
     <surrounding-pairs>
         <pair open="{" close="}" />
         <pair open="[" close="]" />
@@ -47,7 +47,7 @@
         <pair open="&lt;" close="&gt;" />
         <pair open="&quot;" close="&quot;" />
     </surrounding-pairs>
-    
+
     <scopes>
         <include syntax="self" collection="comments" />
         <include syntax="self" collection="processing" />
@@ -60,7 +60,7 @@
         <include syntax="self" collection="values" />
         <include syntax="self" collection="identifiers" />
     </scopes>
-    
+
     <collections>
         <!-- Comments -->
         <collection name="comments">
@@ -77,7 +77,7 @@
                 </ends-with>
             </scope>
         </collection>
-        
+
         <!-- Keywords -->
         <collection name="keywords">
             <scope name="rust.keyword">
@@ -116,11 +116,11 @@
                     <string>use</string>
                     <string>where</string>
                     <string>while</string>
-                    
+
                     <string>async</string>
                     <string>await</string>
                     <string>dyn</string>
-                    
+
                     <string>abstract</string>
                     <string>become</string>
                     <string>box</string>
@@ -134,12 +134,12 @@
                     <string>virtual</string>
                     <string>yield</string>
                     <string>try</string>
-                    
+
                     <string>union</string>
                     <string>&apos;static</string>
                 </strings>
             </scope>
-            
+
             <scope name="rust.identifier.type.primitive">
                 <strings>
                     <string>bool</string>
@@ -162,7 +162,7 @@
                 </strings>
             </scope>
         </collection>
-        
+
         <!-- Values -->
         <collection name="values">
             <scope name="rust.value.boolean">
@@ -186,18 +186,18 @@
                 </ends-with>
             </scope>
         </collection>
-        
+
         <collection name="macros">
             <scope name="rust.markup.bold">
                 <expression>[a-zA-Z0-9_]+\!</expression>
             </scope>
         </collection>
-        
+
         <collection name="identifiers">
             <scope name="rust.identifier">
                 <symbol type="variable" />
                 <starts-with>
-                    <expression>\b(let|var)\s*(mut)?\s*([a-zA-Z0-9_]+)</expression>
+                    <expression>\b(let)\s*(mut)?\s*([a-zA-Z0-9_]+)</expression>
                     <capture number="1" name="rust.keyword" />
                     <capture number="2" name="rust.keyword" />
                     <capture number="3" name="rust.identifier.variable.name" />
@@ -206,17 +206,17 @@
                     <expression>(?=\{|=|:)</expression>
                 </ends-with>
             </scope>
-            
+
             <!--
             <scope name="rust.identifier.property">
                 <expression>\b(?&lt;=\.)([a-zA-Z0-9_]+)(?!\()\b</expression>
             </scope>
-            
+
             <scope name="rust.identifier.property.path">
                 <expression>\b(?&lt;=\:\:)([a-zA-Z0-9_]+)(?!\()\b</expression>
             </scope>
             -->
-            
+
             <scope name="rust.method">
                 <starts-with>
                     <expression>(?&lt;=\.)([a-zA-Z0-9_]+)(\()</expression>
@@ -246,12 +246,12 @@
                     <include syntax="self" />
                 </subscopes>
             </scope>
-            
+
             <scope name="rust.identifier">
                 <expression>\b[a-zA-Z0-9_]+\b</expression>
             </scope>
         </collection>
-        
+
         <!-- Visibility -->
         <collection name="visibility">
             <scope name="rust.visibility.pub">
@@ -278,7 +278,7 @@
                 </subscopes>
             </scope>
         </collection>
-        
+
         <!-- Arguments -->
         <collection name="arguments">
             <scope name="rust.arguments">
@@ -309,13 +309,13 @@
                 </subscopes>
             </scope>
         </collection>
-        
+
         <collection name="lifetime">
             <scope name="rust.identifier.decorator.lifetime">
                 <expression>&apos;[a-zA-Z0-9_]+</expression>
             </scope>
         </collection>
-        
+
         <!-- Built-in stuff -->
         <collection name="std">
             <scope name="rust.identifier.core.type.enum">
@@ -328,7 +328,7 @@
                 <expression>\b(Box|String|Vec|Path|PathBuf|Option|Result)\b</expression>
             </scope>
         </collection>
-        
+
         <!-- Types -->
         <collection name="types">
             <scope name="rust.type.generic">
@@ -355,7 +355,7 @@
                 <capture number="0" name="rust.identifier.type.name" />
             </scope>
         </collection>
-        
+
         <collection name="return-type">
             <scope name="rust.type.return">
                 <starts-with>
@@ -409,7 +409,7 @@
                 </subscopes>
             </scope>
         </collection>
-        
+
         <collection name="processing">
             <scope name="rust.processing">
                 <starts-with>
@@ -420,7 +420,7 @@
                 </ends-with>
             </scope>
         </collection>
-        
+
         <!-- Definitions -->
         <collection name="definitions">
             <scope name="rust.definition.function">
@@ -442,7 +442,7 @@
                     <include syntax="self" collection="function-blocks" />
                 </subscopes>
             </scope>
-            
+
             <scope name="rust.definition.enum">
                 <symbol type="enum">
                     <context behavior="subtree" />
@@ -461,7 +461,7 @@
                     <include syntax="self" collection="function-blocks" />
                 </subscopes>
             </scope>
-            
+
             <scope name="rust.definition.struct">
                 <symbol type="struct">
                     <context behavior="subtree" />
@@ -480,7 +480,7 @@
                     <include syntax="self" collection="function-blocks" />
                 </subscopes>
             </scope>
-            
+
             <scope name="rust.definition.trait">
                 <symbol type="category">
                     <context behavior="subtree" />
@@ -499,7 +499,7 @@
                     <include syntax="self" collection="function-blocks" />
                 </subscopes>
             </scope>
-            
+
             <scope name="rust.definition.protocol">
                 <symbol type="interface">
                     <context behavior="subtree" foldable="false" />
